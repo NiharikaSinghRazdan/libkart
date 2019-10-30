@@ -1,0 +1,52 @@
+version: '2'
+
+services:
+  web:
+    image: dpandharkar/bookstore-web
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    env_file: common.env
+    depends_on:
+      - db
+      - redis
+      - celery
+   
+  db:
+    image: dpandharkar/bookstore-db
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    volumes:
+      - saleor-db:/var/lib/postgresql
+    environment:
+      - POSTGRES_USER=saleor
+      - POSTGRES_PASSWORD=saleor
+
+  redis:
+    image: dpandharkar/bookstore-redis
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    volumes:
+      - saleor-redis:/data
+
+  celery:
+    command: celery -A saleor worker --app=saleor.celeryconf:app --loglevel=info
+    restart: unless-stopped
+    networks:
+      - saleor-backend-tier
+    env_file: common.env
+    depends_on:
+      - redis
+    image: dpandharkar/bookstore-celery
+
+volumes:
+  saleor-db:
+    driver: local
+  saleor-redis:
+    driver: local
+
+networks:
+  saleor-backend-tier:
+    driver: bridge
