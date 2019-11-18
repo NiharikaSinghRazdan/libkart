@@ -2,7 +2,7 @@ version: '2'
 
 services:
   web:
-    image: dpandharkar/bookstore-web
+    image: dpandharkar/bookstore-web:new
     restart: unless-stopped
     networks:
       - saleor-backend-tier
@@ -39,7 +39,7 @@ services:
     env_file: common.env
     depends_on:
       - redis
-    image: dpandharkar/bookstore-celery
+    image: dpandharkar/bookstore-celery:new
 
 volumes:
   saleor-db:
