@@ -1,0 +1,22 @@
+version: 0.0
+Resources:
+  - TargetService:
+      Type: AWS::ECS::Service
+      Properties:
+        TaskDefinition: <TASK_DEFINITION>
+        LoadBalancerInfo:
+          ContainerName: "web"
+          ContainerPort: 8000
+# # Optional properties
+#         PlatformVersion: "LATEST"
+#         # NetworkConfiguration:
+#         #   AwsvpcConfiguration:
+#         #     Subnets: ["subnet-086750b35f7f9928d","subnet-086750b35f7f9928d"]
+#         #     SecurityGroups: ["sg-0c03d27a6f712307d"]
+#         #     AssignPublicIp: "ENABLED"
+Hooks:
+  # - BeforeInstall: ""
+  # - AfterInstall: ""
+  # - AfterAllowTestTraffic: ""
+  # - BeforeAllowTraffic: ""
+  # - AfterAllowTraffic: ""
